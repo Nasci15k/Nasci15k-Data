@@ -3,7 +3,7 @@ const cors = require('cors');
 const fetch = require('node-fetch'); 
 
 // ** CORREÇÃO DO ERRO 'dotenv.config is not a function' **
-// Importa e configura o dotenv diretamente.
+// Importa e configura o dotenv imediatamente
 require('dotenv').config(); 
 
 const app = express();
@@ -14,9 +14,20 @@ const API_BASE_URL = 'https://api.fetchbrasil.pro/';
 const API_TOKEN = process.env.API_TOKEN; 
 
 // ------------------------------------------------
-// Configuração do Middleware
+// Configuração do Middleware e CORS (LIBERADO PARA TODOS)
 // ------------------------------------------------
-app.use(cors()); 
+
+// Configuração do CORS para permitir todas as origens (*)
+const corsOptions = {
+    origin: '*', // LIBERADO: Permite acesso de qualquer URL
+    methods: ['GET', 'POST', 'OPTIONS'], // Métodos necessários para a consulta POST
+    allowedHeaders: ['Content-Type', 'Authorization'], // Autoriza os cabeçalhos usados pelo front-end
+};
+
+// Aplica o middleware CORS
+app.use(cors(corsOptions)); 
+
+// Aplica o middleware de JSON
 app.use(express.json()); 
 
 // Mock de Usuários para simular o front-end (Mantenha este mock para fins de autenticação do proxy)
@@ -130,7 +141,7 @@ app.use('/api/v1/query', apiRouter);
 
 // Rota de saúde/teste
 app.get('/', (req, res) => {
-  res.send('Nasci15k Data Query Proxy (FetchBrasil Pro) está rodando.');
+  res.send('Nasci15k Data Query Proxy (FetchBrasil Pro) está rodando e o CORS está liberado.');
 });
 
 // ------------------------------------------------
